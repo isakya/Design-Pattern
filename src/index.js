@@ -1,29 +1,23 @@
-// 具体产品
-class Product {
-  constructor(name) {
-    this.name = name
-  }
-  init() {
-    alert('init')
-  }
-  fn1() {
-    alert('fn1')
-  }
-  fn2() {
-    alert('fn2')
+// 单例模式 但只能用文档规范，无法完全实现
+class SingleObject {
+  login() {
+    console.log('login...')
   }
 }
 
-// 工厂 将new操作单独封装
-class Creator {
-  create(name) {
-    return new Product(name)
+SingleObject.getInstance = (function () {
+  let instance
+  return function () {
+    if (!instance) {
+      instance = new SingleObject()
+    }
+    return instance
   }
-}
+})()
 
-// 测试
-let creator = new Creator()
-let p = creator.create('p1')
+let obj1 = SingleObject.getInstance()
+obj1.login()
+let obj2 = SingleObject.getInstance()
+obj2.login()
 
-p.init()
-p.fn1()
+console.log('obj1 === obj2', obj1 === obj2)
