@@ -1,32 +1,29 @@
-class jQuery {
-  constructor(selector) {
-    let slice = Array.prototype.slice
-    let dom = slice.call(document.querySelectorAll(selector))
-    let len = dom ? dom.length : 0
-    for (let i = 0; i < len; i++) {
-      this[i] = dom[i]
+
+function loadImg(src) {
+  let promise = new Promise(function (resolve, reject) {
+    let img = document.createElement('img')
+    img.onload = function () {
+      resolve(img)
     }
-    this.length = len
-    this.selector = selector || ''
-  }
-  append(node) {
+    img.onerror = function () {
+      reject('图片加载失败')
+    }
+    img.src = src
+  })
 
-  }
-  addClass(name) {
-
-  }
-  html(data) {
-
-  }
+  return promise
 }
 
-window.$ = function (selector) {
-  return new jQuery(selector)
-}
+let src = 'https://img2.baidu.com/it/u=1750850684,2224293635&fm=253&fmt=auto&app=138&f=PNG?w=499&h=295'
+let result = loadImg(src)
 
-// 测试代码
-var $p = $('p')
-console.log($p)
-console.log($p.addClass)
-//  NodeList 节点实例很像数组,可以使用length属性和forEach方法。但是,它不是数组,不能使用pop或push之类数组特有的方法
-console.log(document.querySelectorAll('p'))
+result.then(res => {
+  // part1
+  alert(`width: ${res.width}`)
+  return res
+}).then(res => {
+  // part2
+  alert(`height: ${res.height}`)
+}).catch(err => {
+  alert(err)
+})
