@@ -1,48 +1,129 @@
-// 车 父类
+// 车辆
 class Car {
-  constructor(name, number) {
-    this.number = number
-    this.name = name
+  constructor(num) {
+    this.num = num
   }
 }
 
-// 快车
-class Kuaiche extends Car {
-  constructor(name, number) {
-    super(name, number)
-    this.price = 1
+// 摄像头
+class Camera {
+  shot(car) {
+    return {
+      num: car.num,
+      inTime: Date.now()
+    }
   }
 }
 
-// 快车
-class Zhuanche extends Car {
-  constructor(name, number) {
-    super(name, number)
-    this.price = 2
+// 出口显示屏
+class Screen {
+  show(car, inTime) {
+    console.log('车牌号', car.num)
+    console.log('停车时间', Date.now() - inTime)
   }
 }
 
-// 行程
-class Trip {
-  constructor(car) {
-    this.car = car
+// 停车场
+class Park {
+  constructor(floors) {
+    this.floors = floors || []
+    this.camera = new Camera()
+    this.screen = new Screen()
+    this.carList = {} // 存储摄像头拍摄返回的车辆信息
   }
-  start() {
-    console.log(`车牌号：${this.car.number}, 车型：${this.car.name}`)
+  in(car) {
+    // 通过摄像头获取信息
+    const info = this.camera.shot(car)
+    // 停到某个停车位
+    const i = parseInt(Math.random() * 100 % 100)
+    const place = this.floors[0].places[i]
+    place.in()
+    info.place = place
+    // 记录信息
+    this.carList[car.num] = info
   }
-  end() {
-    console.log(`价格：${this.car.price}/公里, 总价：${this.car.price * 5}`)
+  out(car) {
+    // 获取信息
+    const info = this.carList[car.num]
+    // 将停车位清空
+    const place = info.place
+    place.out()
+    // 显示时间
+    this.screen.show(car, info.inTime)
+    delete this.carList[car.num]
+  }
+  emptyNum() {
+    return this.floors.map(floor => {
+      return `${floor.index} 层还有 ${floor.emptyPlaceNum()} 个空闲车位`
+    }).join('\n')
   }
 }
 
-const car = new Kuaiche('奥迪', 88888)
-const t = new Trip(car)
+// 层
+class Floor {
+  constructor(index, places) {
+    this.index = index
+    this.places = places || []
+  }
+  emptyPlaceNum() {
+    let num = 0
+    this.places.forEach(p => {
+      if (p.empty) {
+        num = num + 1
+      }
+    })
+    return num
+  }
+}
 
-t.start()
-t.end()
+// 车位
+class Place {
+  constructor() {
+    this.empty = true
+  }
+  in() {
+    this.empty = false
+  }
+  out() {
+    this.empty = true
+  }
+}
 
-const superCar = new Zhuanche('保时捷', 99999)
-const trip = new Trip(superCar)
+// 测试 -----------------
+// 初始化停车场
+const floors = []
+for (let i = 0; i < 3; i++) {
+  const places = []
+  for (let j = 0; j < 100; j++) {
+    places[j] = new Place()
+  }
+  floors[i] = new Floor(i + 1, places)
+}
 
-trip.start()
-trip.end()
+const park = new Park(floors)
+
+// 初始化车辆
+const car1 = new Car(100)
+const car2 = new Car(200)
+const car3 = new Car(300)
+
+console.log('第一辆车进入')
+console.log(park.emptyNum())
+park.in(car1)
+
+console.log('第二辆车进入')
+console.log(park.emptyNum())
+park.in(car2)
+
+console.log('第一辆车离开')
+park.out(car1)
+console.log('第二辆车离开')
+park.out(car2)
+
+console.log('第三辆车进入')
+console.log(park.emptyNum())
+park.in(car3)
+console.log('第三辆车离开')
+park.out(car3)
+
+
