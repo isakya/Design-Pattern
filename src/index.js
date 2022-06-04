@@ -1,30 +1,31 @@
-// 父类
 class People {
-  constructor(name, age) {
+  constructor(name) {
     this.name = name
-    this.age = age
   }
-  eat() {
-    alert(`${this.name} eat something`)
-  }
-  speak() {
-    alert(`My name is ${this.name}, age ${this.age}`)
+  saySomething() {
+
   }
 }
 
-// 子类 继承父类
-class Student extends People {
-  constructor(name, age, number) {
-    super(name, age)
-    this.number = number
+class A extends People {
+  constructor(name) {
+    super(name)
   }
-  study() {
-    alert(`${this.name} study`)
+  saySomething() {
+    console.log('I am A')
   }
 }
 
-const xiaoming = new Student('xiaoming', 10, 202237777)
+class B extends People {
+  constructor(name) {
+    super(name)
+  }
+  saySomething() {
+    console.log('I am b')
+  }
+}
 
-xiaoming.study()
-xiaoming.speak()
-xiaoming.eat()
+let a = new A('a')
+a.saySomething()
+let b = new B('b')
+b.saySomething()
