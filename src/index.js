@@ -1,29 +1,48 @@
-
-function loadImg(src) {
-  let promise = new Promise(function (resolve, reject) {
-    let img = document.createElement('img')
-    img.onload = function () {
-      resolve(img)
-    }
-    img.onerror = function () {
-      reject('图片加载失败')
-    }
-    img.src = src
-  })
-
-  return promise
+// 车 父类
+class Car {
+  constructor(name, number) {
+    this.number = number
+    this.name = name
+  }
 }
 
-let src = 'https://img2.baidu.com/it/u=1750850684,2224293635&fm=253&fmt=auto&app=138&f=PNG?w=499&h=295'
-let result = loadImg(src)
+// 快车
+class Kuaiche extends Car {
+  constructor(name, number) {
+    super(name, number)
+    this.price = 1
+  }
+}
 
-result.then(res => {
-  // part1
-  alert(`width: ${res.width}`)
-  return res
-}).then(res => {
-  // part2
-  alert(`height: ${res.height}`)
-}).catch(err => {
-  alert(err)
-})
+// 快车
+class Zhuanche extends Car {
+  constructor(name, number) {
+    super(name, number)
+    this.price = 2
+  }
+}
+
+// 行程
+class Trip {
+  constructor(car) {
+    this.car = car
+  }
+  start() {
+    console.log(`车牌号：${this.car.number}, 车型：${this.car.name}`)
+  }
+  end() {
+    console.log(`价格：${this.car.price}/公里, 总价：${this.car.price * 5}`)
+  }
+}
+
+const car = new Kuaiche('奥迪', 88888)
+const t = new Trip(car)
+
+t.start()
+t.end()
+
+const superCar = new Zhuanche('保时捷', 99999)
+const trip = new Trip(superCar)
+
+trip.start()
+trip.end()
