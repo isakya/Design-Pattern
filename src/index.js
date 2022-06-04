@@ -1,4 +1,4 @@
-父类
+// 父类
 class People {
   constructor(name, age) {
     this.name = name
@@ -23,3 +23,8 @@ class Student extends People {
   }
 }
 
+const xiaoming = new Student('xiaoming', 10, 202237777)
+
+xiaoming.study()
+xiaoming.speak()
+xiaoming.eat()
