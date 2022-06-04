@@ -1,23 +1,41 @@
-// 单例模式 但只能用文档规范，无法完全实现
-class SingleObject {
-  login() {
-    console.log('login...')
+// 模拟登录框
+class LoginForm {
+  constructor() {
+    this.state = 'hide'
+  }
+  show() {
+    if (this.state === 'show') {
+      alert('已经显示')
+      return
+    }
+    this.state = 'show'
+    console.log('登录框显示成功')
+  }
+  hide() {
+    if (this.state === 'hide') {
+      alsert('已隐藏')
+      return
+    }
+    this.state = 'hide'
+    console.log('登录框隐藏成功')
   }
 }
 
-SingleObject.getInstance = (function () {
+LoginForm.getInstance = (function () {
   let instance
   return function () {
     if (!instance) {
-      instance = new SingleObject()
+      instance = new LoginForm()
     }
     return instance
   }
 })()
 
-let obj1 = SingleObject.getInstance()
-obj1.login()
-let obj2 = SingleObject.getInstance()
-obj2.login()
+// 测试
+let login1 = LoginForm.getInstance()
+login1.show()
 
-console.log('obj1 === obj2', obj1 === obj2)
+let login2 = LoginForm.getInstance()
+login2.hide()
+
+console.log('login1 === login2', login1 === login2)
