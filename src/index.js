@@ -1,14 +1,20 @@
-// ES7 带参数的装饰器
-function testDec(isDec) { // 参数接受
-  return function (target) { // 返回函数默认接受的是一个类，所以参数不能在这里接收
-    target.isDec = isDec
+function mixins(...list) {
+  return function (target) {
+    Object.assign(target.prototype, ...list)
   }
 }
 
-// ES7 装饰类
-@testDec(false)
-class Demo {
+const Foo = {
+  foo() {
+    alert('foo')
+  }
+}
+
+@mixins(Foo)
+class MyClass {
 
 }
 
-alert(Demo.isDec)
+const obj = new MyClass()
+
+obj.foo()
