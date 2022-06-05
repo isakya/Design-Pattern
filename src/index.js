@@ -1,23 +1,20 @@
-function readonly(target, name, descriptor) {
-  descriptor.writable = false
+function log(target, name, descriptor) {
+  let oldValue = descriptor.value
+  console.log(descriptor.value, 111)
+  descriptor.value = function () {
+    console.log(`calling ${name} width`, arguments)
+    return oldValue.apply(this, arguments)
+  }
   return descriptor
 }
 
-class Person {
-  constructor() {
-    this.first = 'A'
-    this.last = 'B'
-  }
-
-  @readonly
-  name() {
-    return `${this.first} ${this.last}`
+class Math {
+  @log
+  add(a, b) {
+    return a + b
   }
 }
 
-let p = new Person()
-console.log(p.name())
-p.name = function () {
-  alert(100)
-}
-console.log(p.name())
+let math = new Math()
+const result = math.add(2, 4)
+console.log(result)
