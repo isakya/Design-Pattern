@@ -1,20 +1,23 @@
-function mixins(...list) {
-  return function (target) {
-    Object.assign(target.prototype, ...list)
+function readonly(target, name, descriptor) {
+  descriptor.writable = false
+  return descriptor
+}
+
+class Person {
+  constructor() {
+    this.first = 'A'
+    this.last = 'B'
+  }
+
+  @readonly
+  name() {
+    return `${this.first} ${this.last}`
   }
 }
 
-const Foo = {
-  foo() {
-    alert('foo')
-  }
+let p = new Person()
+console.log(p.name())
+p.name = function () {
+  alert(100)
 }
-
-@mixins(Foo)
-class MyClass {
-
-}
-
-const obj = new MyClass()
-
-obj.foo()
+console.log(p.name())
