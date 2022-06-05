@@ -1,3 +1,4 @@
+// 代理模式
 class ReadImg {
   constructor(fileName) {
     this.fileName = fileName
