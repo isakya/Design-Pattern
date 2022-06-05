@@ -1,27 +1,9 @@
-// 装饰器模式
-class Circle {
-  draw() {
-    console.log('画圆型')
-  }
+@testDec
+class Demo {
+
 }
 
-// 装饰器
-class Decorator {
-  constructor() {
-    this.circle = circle
-  }
-  draw() {
-    this.circle.draw()
-    this.setRedBorder(circle)
-  }
-  setRedBorder(circle) {
-    console.log('设置红色边框')
-  }
+function testDec(target) {
+  target.isDec = true
 }
-
-// 测试代码
-let circle = new Circle()
-circle.draw()
-
-let dec = new Decorator(circle)
-dec.draw()
+alert(Demo.isDec)
