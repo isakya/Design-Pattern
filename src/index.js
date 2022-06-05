@@ -1,20 +1,17 @@
-function log(target, name, descriptor) {
-  let oldValue = descriptor.value
-  console.log(descriptor.value, 111)
-  descriptor.value = function () {
-    console.log(`calling ${name} width`, arguments)
-    return oldValue.apply(this, arguments)
-  }
-  return descriptor
-}
+import { readonly } from "core-decorators"
 
-class Math {
-  @log
-  add(a, b) {
-    return a + b
+class Person {
+  constructor() {
+
+  }
+  @readonly
+  name() {
+    return 'zs'
   }
 }
 
-let math = new Math()
-const result = math.add(2, 4)
-console.log(result)
+let p = new Person()
+p.name = function () {
+  return 123
+}
+// console.log(p.name()) 报错，name因为只读不能修改
