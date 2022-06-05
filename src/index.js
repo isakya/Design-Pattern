@@ -1,17 +1,13 @@
-import { readonly } from "core-decorators"
+import { deprecate } from "core-decorators"
 
 class Person {
-  constructor() {
-
-  }
-  @readonly
+  // 提示API废用信息
+  @deprecate('即将废用', { url: 'www.baidu.com' })
   name() {
     return 'zs'
   }
 }
 
-let p = new Person()
-p.name = function () {
-  return 123
-}
-// console.log(p.name()) 报错，name因为只读不能修改
+const p = new Person()
+
+p.name()
