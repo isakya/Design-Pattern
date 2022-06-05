@@ -1,27 +1,36 @@
-// 代理模式
-class ReadImg {
-  constructor(fileName) {
-    this.fileName = fileName
-    this.loadFromDisk() // 初始化即从硬盘中加载，模拟
-  }
-  display() {
-    console.log('display...' + this.fileName)
-  }
-  loadFromDisk() {
-    console.log('loading...' + this.fileName)
-  }
+// 明星
+let star = {
+  name: 'zs',
+  age: 12,
+  phone: '123456'
 }
 
-class ProxyImg {
-  constructor(fileName) {
-    this.readImg = new ReadImg(fileName)
+// 经纪人
+let agent = new Proxy(star, {
+  get: function (target, key) {
+    if (key === 'phone') {
+      // 返回经纪人自己的电话
+      return '123123123'
+    }
+    if (key === 'price') {
+      // 明星不报价，经纪人报价
+      return 120000
+    }
+    return target[key]
+  },
+  set: function (target, key, val) {
+    if (key === 'customPrice') {
+      if (val < 100000) {
+        // 最低10w
+        throw new Error('价格太低')
+      } else {
+        target[key] = val
+        console.log('价格:', val, '合适', '达成协议')
+        return true
+      }
+    }
   }
-  display() {
-    this.readImg.display()
-  }
-}
+})
 
-const proxyImg = new ProxyImg('1.png')
-
-proxyImg.display()
-
+// test
+console.log(agent.customPrice = 200000)
