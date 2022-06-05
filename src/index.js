@@ -1,20 +1,27 @@
-class Adaptee {
-  specificRequest() {
-    return '德国标准插头'
+// 装饰器模式
+class Circle {
+  draw() {
+    console.log('画圆型')
   }
 }
 
-class Target {
+// 装饰器
+class Decorator {
   constructor() {
-    this.adaptee = new Adaptee()
+    this.circle = circle
   }
-  request() {
-    let info = this.adaptee.specificRequest()
-    return `${info} - 转换器 - 中国标准插头`
+  draw() {
+    this.circle.draw()
+    this.setRedBorder(circle)
+  }
+  setRedBorder(circle) {
+    console.log('设置红色边框')
   }
 }
 
-// 测试
-let target = new Target()
-let res = target.request()
-console.log(res)
+// 测试代码
+let circle = new Circle()
+circle.draw()
+
+let dec = new Decorator(circle)
+dec.draw()
