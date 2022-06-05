@@ -18,15 +18,14 @@
   </div>
   <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script>
-    var div1 = document.getElementById('div1')
-
-    div1.addEventListener('click', function (e) {
-      var target = e.target
-      // document.body.nodeName; BODY 获得 body 元素的节点名称
-      console.log(target.nodeName)
-      if (target.nodeName === 'A') {
-        alert(target.innerHTML)
+    $('#div1').click(function () {
+      // var _this = this
+      let fn = function () {
+        console.log(this)
+        $(this).css('background-color', 'yellow')
       }
+      fn = $.proxy(fn, this)
+      setTimeout(fn, 1000)
     })
   </script>
 </body>
