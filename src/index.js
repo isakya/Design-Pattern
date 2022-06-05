@@ -1,13 +1,26 @@
-import { deprecate } from "core-decorators"
-
-class Person {
-  // 提示API废用信息
-  @deprecate('即将废用', { url: 'www.baidu.com' })
-  name() {
-    return 'zs'
+class ReadImg {
+  constructor(fileName) {
+    this.fileName = fileName
+    this.loadFromDisk() // 初始化即从硬盘中加载，模拟
+  }
+  display() {
+    console.log('display...' + this.fileName)
+  }
+  loadFromDisk() {
+    console.log('loading...' + this.fileName)
   }
 }
 
-const p = new Person()
+class ProxyImg {
+  constructor(fileName) {
+    this.readImg = new ReadImg(fileName)
+  }
+  display() {
+    this.readImg.display()
+  }
+}
 
-p.name()
+const proxyImg = new ProxyImg('1.png')
+
+proxyImg.display()
+
