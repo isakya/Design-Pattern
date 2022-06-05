@@ -1,36 +1,49 @@
-// 明星
-let star = {
-  name: 'zs',
-  age: 12,
-  phone: '123456'
+// 观察者模式
+
+// 主题，保存状态，状态变化之后触发所有观察者对象
+class Subject {
+  constructor() {
+    this.state = 0
+    this.observers = []
+  }
+  // 获取当前主题
+  getState() {
+    return this.state
+  }
+  // 主题更新，调用通知所有订阅者
+  setState(state) {
+    this.state = state
+    this.notifyAllObservers()
+  }
+  // 通知所有订阅者
+  notifyAllObservers() {
+    this.observers.forEach(observer => {
+      observer.update()
+    })
+  }
+  // 添加订阅者
+  attach(observer) {
+    this.observers.push(observer)
+  }
 }
 
-// 经纪人
-let agent = new Proxy(star, {
-  get: function (target, key) {
-    if (key === 'phone') {
-      // 返回经纪人自己的电话
-      return '123123123'
-    }
-    if (key === 'price') {
-      // 明星不报价，经纪人报价
-      return 120000
-    }
-    return target[key]
-  },
-  set: function (target, key, val) {
-    if (key === 'customPrice') {
-      if (val < 100000) {
-        // 最低10w
-        throw new Error('价格太低')
-      } else {
-        target[key] = val
-        console.log('价格:', val, '合适', '达成协议')
-        return true
-      }
-    }
+// 观察者
+class Observer {
+  constructor(name, subject) {
+    this.name = name
+    this.subject = subject
+    this.subject.attach(this)
   }
-})
+  update() {
+    console.log(`${this.name} update, state: ${this.subject.getState()}`)
+  }
+}
 
-// test
-console.log(agent.customPrice = 200000)
+// 测试
+let s = new Subject()
+let o1 = new Observer('o1', s)
+let o2 = new Observer('o2', s)
+let o3 = new Observer('o3', s)
+
+// 更新主题
+s.setState(1)
