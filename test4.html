@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="div1">
+    <a href="#">a1</a>
+    <a href="#">a2</a>
+    <a href="#">a3</a>
+    <a href="#">a4</a>
+    <a href="#">a5</a>
+  </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    var arr = [1, 2, 3]
+    var nodeList = document.getElementsByTagName('a')
+    var $a = $('a')
+
+    // 用一个函数实现3种遍历
+    function each(data) {
+      var $data = $(data) // 生成迭代器
+      $data.each(function (key, val) {
+        console.log(key, val)
+      })
+    }
+    // 顺序遍历有序集合
+    // 使用者不必指导集合内部的结构
+    each(arr)
+    each(nodeList)
+    each($a)
+
+
+
+
+    // // 遍历数组
+    // arr.forEach(function (item) {
+    //   console.log(item)
+    // })
+
+    // // 遍历nodeList
+    // var i, length = nodeList.length
+    // for (i = 0; i < length; i++) {
+    //   console.log(nodeList[i])
+    // }
+
+    // // 遍历$a
+    // $a.each(function (key, elem) {
+    //   console.log(key, elem)
+    // })
+  </script>
+</body>
+
+</html>
