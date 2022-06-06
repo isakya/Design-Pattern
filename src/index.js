@@ -1,37 +1,34 @@
-// 迭代器模式代码实现
-class Iterator {
-  constructor(container) {
-    this.list = container.list
-    this.index = 0
-  }
-  next() {
-    if (this.hasNext()) {
-      return this.list[this.index++]
-    }
-    return null
-  }
-  hasNext() {
-    if (this.index >= this.list.length) {
-      return false
-    }
-    return true
-  }
-}
-
-class Container {
-  constructor(list) {
-    this.list = list
-  }
+function each(data) {
   // 生成遍历器
-  getItertor() {
-    return new Iterator(this)
+  let iterator = data[Symbol.iterator]()
+  // data[Symbol.iterator]().next()注意不能直接next
+  // 这样只会重复拿到 index 0 的值
+
+  let item = { done: false }
+
+  // b.next()
+  // { value: 'a', done: false }
+  // b.next()
+  // { value: 'b', done: false }
+  // b.next()
+  // { value: 'c', done: false }
+  // b.next()
+  // { value: undefined, done: true } // 没有数据时返回
+
+  while (!item.done) {
+    item = iterator.next()
+    if (!item.done) {
+      console.log(item.value)
+    }
   }
 }
 
-var arr = [1, 2, 3, 4, 5]
+let a = '12345'
+let arr = [1, 2, 3, 4]
+let m = new Map()
+m.set('a', 100)
+m.set('b', 100)
 
-let container = new Container(arr)
-let iterator = container.getItertor()
-while (iterator.hasNext()) {
-  console.log(iterator.next())
-}
+each(a)
+each(m)
+each(arr)
