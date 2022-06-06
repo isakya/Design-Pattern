@@ -1,15 +1,18 @@
 // stream 用到自定义事件
 const fs = require('fs')
-const readStream = fs.createReadStream('./data/file1.txt')
+const readline = require('readline')
 
-let length = 0
-
-readStream.on('data', function (chunk) {
-  let len = chunk.toString().length
-  console.log('len', len)
-  length += len
+let rl = readline.createInterface({
+  input: fs.createReadStream('./data/file1.txt')
 })
 
-readStream.on('end', function () {
-  console.log('length', length)
+// 行数
+let lineNum = 0
+
+rl.on('line', function () {
+  lineNum++
+})
+
+rl.on('close', function () {
+  console.log('lineNum', lineNum)
 })
