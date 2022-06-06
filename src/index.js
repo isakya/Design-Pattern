@@ -1,41 +1,55 @@
-// 状态(红灯、绿灯、黄灯)
-class State {
-  constructor(color) {
-    this.color = color
+const StateMachine = require("javascript-state-machine")
+
+import $ from 'jquery'
+
+// 初始化状态机模型
+let fsm = new StateMachine({
+  init: '收藏',
+  transitions: [
+    {
+      name: 'doStore',
+      form: '收藏',
+      to: '取消收藏'
+    },
+    {
+      name: 'deleteStore',
+      from: '取消收藏',
+      to: '收藏'
+    }
+  ],
+  methods: {
+    // 监听执行收藏
+    onDoStore: function () {
+      alert('收藏成功') // 可以 post 请求
+      updateText()
+    },
+    // 监听取消收藏
+    onDeleteStore: function () {
+      alert('已经取消收藏') // 可以 post 请求
+      updateText()
+    }
   }
-  handle(context) {
-    console.log(`turn to ${this.color} light`)
-    // 设置状态
-    context.setState(this)
+})
+
+
+let $btn = $('#btn1')
+
+// 按钮点击事件
+$btn.click(function () {
+  if (fsm.is('收藏')) {
+    fsm.doStore()
+  } else {
+    fsm.deleteStore()
   }
+})
+
+// 更新按钮的文案
+function updateText() {
+  $btn.text(fsm.state)
 }
 
-// 主体
-class Context {
-  constructor() {
-    this.state = null
-  }
-  // 获取状态
-  getState() {
-    return this.state
-  }
-  setState(state) {
-    this.state = state
-  }
-}
+// 初始化文案
 
-// test
-let context = new Context()
+updateText()
 
-let green = new State('green')
-let red = new State('red')
-let yellow = new State('yellow')
-
-// 绿灯亮了
-green.handle(context)
-// 打印状态
-console.log(context.getState())
-
-
-// 核心：
-// 状态的切换 和 状态的获取是分开的，在逻辑上做了个分离
+// npm run dev
