@@ -1,34 +1,15 @@
-const EventEmitter = require('events').EventEmitter
+// stream 用到自定义事件
+const fs = require('fs')
+const readStream = fs.createReadStream('./data/file1.txt')
 
-// 简单使用
-// const emitter1 = new EventEmitter()
-// // 监听 some 事件
-// emitter1.on('some', info => {
-//   console.log('fn1', info)
-// })
-// // 监听 some 事件
-// emitter1.on('some', info => {
-//   console.log('fn2', info)
-// })
+let length = 0
 
-// // 触发 some 事件
-// emitter1.emit('some', 'xxx')
-
-
-
-// 继承用法
-class Dog extends EventEmitter {
-  constructor(name) {
-    super()
-    this.name = name
-  }
-}
-
-let simon = new Dog('simon')
-simon.on('bark', function () {
-  console.log(this.name, 'barked')
+readStream.on('data', function (chunk) {
+  let len = chunk.toString().length
+  console.log('len', len)
+  length += len
 })
 
-setInterval(function () {
-  simon.emit('bark')
-}, 1000)
+readStream.on('end', function () {
+  console.log('length', length)
+})
