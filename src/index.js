@@ -1,25 +1,55 @@
-// 原型模式
+// 非策略模式
 
-// 一个原型  对象
-const prototype = {
-  getName: function () {
-    return this.first + ' ' + this.last
-  },
-  say: function () {
-    alert('hello')
+// class User {
+//   constructor(type) {
+//     this.type = type
+//   }
+//   buy() {
+//     if (this.type === 'ordinary') {
+//       console.log('普通用户购买')
+//     } else if (this.type === 'member') {
+//       console.log('会员用户购买')
+//     } else if (this.type === 'vip') {
+//       console.log('vip 用户购买')
+//     }
+//   }
+// }
+
+// // 测试代码
+// let u1 = new User('ordinary')
+// u1.buy()
+
+// let u2 = new User('member')
+// u2.buy()
+
+// let u3 = new User('vip')
+// u3.buy()
+
+
+
+// 策略模式
+
+class OrdinaryUser {
+  buy() {
+    console.log('普通用户购买')
   }
 }
 
-// 基于原型创建 x
-let x = Object.create(prototype)
-x.first = 'A'
-x.last = 'B'
-alert(x.getName())
-x.say()
+class MemberUser {
+  buy() {
+    console.log('会员用户购买')
+  }
+}
 
-// 基于原型创建 y
-let y = Object.create(prototype)
-y.first = 'C'
-y.last = 'D'
-alert(y.getName())
-y.say()
+class VipUser {
+  buy() {
+    console.log('vip 用户购买')
+  }
+}
+
+let u1 = new OrdinaryUser()
+u1.buy()
+let u2 = new MemberUser()
+u2.buy()
+let u3 = new VipUser()
+u3.buy()
