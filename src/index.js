@@ -1,55 +1,40 @@
-// 非策略模式
+// 命令模式
 
-// class User {
-//   constructor(type) {
-//     this.type = type
-//   }
-//   buy() {
-//     if (this.type === 'ordinary') {
-//       console.log('普通用户购买')
-//     } else if (this.type === 'member') {
-//       console.log('会员用户购买')
-//     } else if (this.type === 'vip') {
-//       console.log('vip 用户购买')
-//     }
-//   }
-// }
-
-// // 测试代码
-// let u1 = new User('ordinary')
-// u1.buy()
-
-// let u2 = new User('member')
-// u2.buy()
-
-// let u3 = new User('vip')
-// u3.buy()
-
-
-
-// 策略模式
-
-class OrdinaryUser {
-  buy() {
-    console.log('普通用户购买')
+// 接受者
+class Receiver {
+  exec() {
+    console.log('执行')
   }
 }
 
-class MemberUser {
-  buy() {
-    console.log('会员用户购买')
+// 命令者
+class Command {
+  constructor(receiver) {
+    this.receiver = receiver
+  }
+  cmd() {
+    console.log('传达命令')
+    this.receiver.exec()
   }
 }
 
-class VipUser {
-  buy() {
-    console.log('vip 用户购买')
+// 触发者
+class Invoker {
+  constructor(command) {
+    this.command = command
+  }
+  Invoke() {
+    console.log('开始')
+    this.command.cmd()
   }
 }
 
-let u1 = new OrdinaryUser()
-u1.buy()
-let u2 = new MemberUser()
-u2.buy()
-let u3 = new VipUser()
-u3.buy()
+// 士兵
+let soldier = new Receiver()
+// 小号手
+let trumpeter = new Command(soldier)
+
+// 将军
+let general = new Invoker(trumpeter)
+
+general.Invoke()
