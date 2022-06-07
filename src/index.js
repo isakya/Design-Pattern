@@ -1,40 +1,62 @@
-// 命令模式
+// 备忘录模式
 
-// 接受者
-class Receiver {
-  exec() {
-    console.log('执行')
+// 备忘对象
+class Memento {
+  constructor(content) {
+    this.content = content
+  }
+  getContent() {
+    return this.content
   }
 }
 
-// 命令者
-class Command {
-  constructor(receiver) {
-    this.receiver = receiver
+// 备忘列表
+class CareTaker {
+  constructor() {
+    this.list = []
   }
-  cmd() {
-    console.log('传达命令')
-    this.receiver.exec()
+  add(memento) {
+    this.list.push(memento)
   }
-}
-
-// 触发者
-class Invoker {
-  constructor(command) {
-    this.command = command
-  }
-  Invoke() {
-    console.log('开始')
-    this.command.cmd()
+  get(index) {
+    return this.list[index]
   }
 }
 
-// 士兵
-let soldier = new Receiver()
-// 小号手
-let trumpeter = new Command(soldier)
+// 编辑器
+class Editor {
+  constructor() {
+    this.content = null
+  }
+  setContent(content) {
+    this.content = content
+  }
+  getContent() {
+    return this.content
+  }
+  saveContentToMemento() {
+    return new Memento(this.content)
+  }
+  getContentFromMemento(memento) {
+    this.content = memento.getContent()
+  }
+}
 
-// 将军
-let general = new Invoker(trumpeter)
+// 测试代码
+let editor = new Editor()
+let careTaker = new CareTaker()
 
-general.Invoke()
+editor.setContent('111')
+editor.setContent('222')
+careTaker.add(editor.saveContentToMemento()) // 将当前内容备份
+
+editor.setContent('333')
+careTaker.add(editor.saveContentToMemento()) // 将当前内容备份
+editor.setContent('444')
+
+console.log(editor.getContent())
+editor.getContentFromMemento(careTaker.get(1)) // 撤销
+console.log(editor.getContent())
+
+editor.getContentFromMemento(careTaker.get(0)) // 撤销
+console.log(editor.getContent())
