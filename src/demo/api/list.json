@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "《JS 高级程序设计》",
+    "price": 149,
+    "discount": 1
+  },
+  {
+    "id": 2,
+    "name": "《JS 设计模式4》",
+    "price": 110,
+    "discount": 1
+  },
+  {
+    "id": 3,
+    "name": "《JS 设计模式3》",
+    "price": 510,
+    "discount": 1
+  },
+  {
+    "id": 4,
+    "name": "《JS 设计模式1》",
+    "price": 310,
+    "discount": 0
+  },
+  {
+    "id": 5,
+    "name": "《JS 设计模式2》",
+    "price": 210,
+    "discount": 0
+  }
+]
