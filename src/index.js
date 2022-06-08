@@ -1,62 +1,50 @@
-// 备忘录模式
+// 中介者模式
 
-// 备忘对象
-class Memento {
-  constructor(content) {
-    this.content = content
-  }
-  getContent() {
-    return this.content
-  }
-}
-
-// 备忘列表
-class CareTaker {
+class A {
   constructor() {
-    this.list = []
+    this.number = 0
   }
-  add(memento) {
-    this.list.push(memento)
-  }
-  get(index) {
-    return this.list[index]
+  setNumber(num, m) {
+    this.number = num
+    if (m) {
+      m.setB()
+    }
   }
 }
 
-// 编辑器
-class Editor {
+class B {
   constructor() {
-    this.content = null
+    this.number = 0
   }
-  setContent(content) {
-    this.content = content
-  }
-  getContent() {
-    return this.content
-  }
-  saveContentToMemento() {
-    return new Memento(this.content)
-  }
-  getContentFromMemento(memento) {
-    this.content = memento.getContent()
+  setNumber(num, m) {
+    this.number = num
+    if (m) {
+      m.setA()
+    }
   }
 }
 
-// 测试代码
-let editor = new Editor()
-let careTaker = new CareTaker()
+// 中介者
+class Mediator {
+  constructor(a, b) {
+    this.a = a
+    this.b = b
+  }
+  setB() {
+    let number = this.a.number
+    this.b.setNumber(number * 100)
+  }
+  setA() {
+    let number = this.b.number
+    this.a.setNumber(number / 100)
+  }
+}
 
-editor.setContent('111')
-editor.setContent('222')
-careTaker.add(editor.saveContentToMemento()) // 将当前内容备份
-
-editor.setContent('333')
-careTaker.add(editor.saveContentToMemento()) // 将当前内容备份
-editor.setContent('444')
-
-console.log(editor.getContent())
-editor.getContentFromMemento(careTaker.get(1)) // 撤销
-console.log(editor.getContent())
-
-editor.getContentFromMemento(careTaker.get(0)) // 撤销
-console.log(editor.getContent())
+// 测试
+let a = new A()
+let b = new B()
+let m = new Mediator(a, b)
+a.setNumber(100, m)
+console.log(a.number, b.number)
+b.setNumber(100, m)
+console.log(a.number, b.number)
